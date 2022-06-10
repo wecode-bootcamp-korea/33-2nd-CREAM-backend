@@ -1,6 +1,12 @@
 from pathlib import Path
 
-from my_settings import SECRET_KEY, DATABASES, ALGORITHM
+from my_settings import (
+    SECRET_KEY, 
+    DATABASES, 
+    ALGORITHM, 
+    KAKAO_REST_API_KEY, 
+    KAKAO_REDIRECT_URI,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,9 +15,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY
-DATABASES  = DATABASES
-ALGORITHM  = ALGORITHM
+SECRET_KEY         = SECRET_KEY
+DATABASES          = DATABASES
+ALGORITHM          = ALGORITHM
+KAKAO_REST_API_KEY = KAKAO_REST_API_KEY
+KAKAO_REDIRECT_URI = KAKAO_REDIRECT_URI
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

@@ -3,7 +3,7 @@ from django.db import models
 from core.models import TimeStampedModel
 
 class User(TimeStampedModel):
-    kakao_id           = models.IntegerField(unique=True)
+    kakao_id           = models.BigIntegerField(unique=True)
     email              = models.EmailField(max_length=100, unique=True)
     nickname           = models.CharField(max_length=50)
     thumbnail_url      = models.URLField(max_length=600)
