@@ -44,7 +44,7 @@ class UserTest(TestCase):
         mocked_kakao_profile.return_value = MockedKakaoProfile().json()
         response                          = self.client.get('/users/login/kakao')
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
     @patch.object(KakaoLoginAPI, "get_kakao_profile")
     @patch.object(KakaoLoginAPI, "get_kakao_token")

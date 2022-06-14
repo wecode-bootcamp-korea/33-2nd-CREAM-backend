@@ -1,8 +1,25 @@
+from enum import Enum
+
 from django.db import models
 
 from core.models     import TimeStampedModel
 from users.models    import User
 from products.models import ProductSize
+
+class BidTypeEnum(Enum):
+    BUY      = 1
+    SELL     = 2
+    END      = 3
+    CANCELED = 4
+
+class OrderStatusEnum(Enum):
+    PREPARING          = 1
+    SELLER_SHIPPED     = 2
+    CHECK_WAITING      = 3
+    CHECK_PASSED       = 4
+    CHECK_REJECTED     = 5
+    CREAM_SHIPPED      = 6
+    SHIPPING_COMPLETED = 7
 
 class BidType(models.Model):
     name = models.CharField(max_length=20)
