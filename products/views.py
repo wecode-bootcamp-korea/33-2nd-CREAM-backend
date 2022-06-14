@@ -48,12 +48,13 @@ class ProductListView(View):
             'sell_now'    : '-sell_price',
             'release_date': 'release_date',
         }    
-        
+        sort = sort_types.get(sort, '-sales_count')
+
         products = Product.objects.prefetch_related('images', 'productsize_set__bids')\
             .annotate(buy_price=Min("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.SELL.value)),
             sell_price=Max("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.BUY.value)),
             premium=F('buy_price') - F('release_price'), sales_count=Count('productsize__orders', distinct=True))\
-            .filter(q).distinct().order_by(sort_types.get(sort, '-sales_count'))[offset:offset+limit]
+            .filter(q).distinct().order_by(sort)[offset:offset+limit]
 
         product_list = [{
             "product_id"   : product.id,
