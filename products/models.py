@@ -24,6 +24,9 @@ class Product(TimeStampedModel):
 
     def __str__(self):
         return self.korean_name
+
+    def get_price(self, sort):
+        return format(int(self.sell_price), ',d') if sort == '-sell_price' else format(int(self.buy_price), ',d')
     
 class ProductImage(models.Model):
     product   = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
