@@ -4,6 +4,12 @@ from core.models     import TimeStampedModel
 from users.models    import User
 from products.models import ProductSize
 
+class BidTypeEnum(Enum):
+    BUY      = 1
+    SELL     = 2
+    END      = 3
+    CANCELED = 4
+
 class BidType(models.Model):
     name = models.CharField(max_length=20)
 

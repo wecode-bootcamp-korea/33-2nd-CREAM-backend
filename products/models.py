@@ -2,6 +2,12 @@ from django.db import models
 
 from core.models import TimeStampedModel
 
+class BidTypeEnum(Enum):
+    BUY      = 1
+    SELL     = 2
+    END      = 3
+    CANCELED = 4
+
 class ProductCategory(models.Model):
     name = models.CharField(max_length=50)
 
@@ -24,6 +30,13 @@ class Product(TimeStampedModel):
 
     def __str__(self):
         return self.korean_name
+
+    def get_price(self, sort_type):
+        return format(int(product.sell_price), ',d') if sort == '-sell_price' else format(int(product.buy_price), ',d')
+    
+    @property
+    def price(self, sort_type):
+        return format(int(product.sell_price), ',d') if sort == '-sell_price' else format(int(product.buy_price), ',d')
     
 class ProductImage(models.Model):
     product   = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')

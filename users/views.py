@@ -10,24 +10,24 @@ from core.utils   import KakaoLoginAPI
 class KakaoLoginView(View):
     def get(self, request):
         try:
-            code            = request.GET.get('code')
-            kakao_login_api = KakaoLoginAPI()
+            code      = request.GET.get('code')
+            kakao_api = KakaoLoginAPI(client_id=settings.CLIENT_ID)
 
-            kakao_token   = kakao_login_api.get_kakao_token(code)['access_token']
-            kakao_profile = kakao_login_api.get_kakao_profile(kakao_token)
+            kakao_api.get_kakao_token(code)
+            kakao_profile = kakao_api.get_kakao_profile()
 
             user, is_created  = User.objects.get_or_create(
                 kakao_id = kakao_profile['id'],
                 defaults = {
-                    'email'         : kakao_profile['kakao_account']['email'],
-                    'nickname'      : kakao_profile['kakao_account']['profile']['nickname'],
-                    'thumbnail_url' : kakao_profile['kakao_account']['profile']['thumbnail_image_url']
+                    'email'         : kakao_profile['email'],
+                    'nickname'      : kakao_profile['nickname'],
+                    'thumbnail_url' : kakao_profile['thumbnail_image_url']
                 }
             )
 
-            cream_token = jwt.encode({'id': user.id}, settings.SECRET_KEY, settings.ALGORITHM)
-            status      = 201 if is_created else 200
-            return JsonResponse({'cream_token': cream_token}, status=status)
+            access_token = jwt.encode({'id': user.id}, settings.SECRET_KEY, settings.ALGORITHM)
+
+            return JsonResponse({'access_token': access_token}, status=200)
 
         except KeyError:
             return JsonResponse({'message': 'KEY_ERROR'}, status=400)
