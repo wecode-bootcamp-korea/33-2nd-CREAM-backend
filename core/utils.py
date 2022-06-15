@@ -26,31 +26,40 @@ def login_decorator(func):
     return wrapper
 
 class KakaoLoginAPI:
-    def __init__(self):
+    def __init__(self, client_id):
+        self.client_id       = client_id
         self.kakao_token_uri = "https://kauth.kakao.com/oauth/token"
         self.kakao_user_uri  = "https://kapi.kakao.com/v2/user/me"
+        self._access_token    = None
 
     def get_kakao_token(self, code):
         body = {
             "grant_type"  : "authorization_code",
-            "client_id"   : settings.KAKAO_REST_API_KEY,
-            "redirect_uri": settings.KAKAO_REDIRECT_URI,
             "code"        : code,
+            "redirect_uri": settings.KAKAO_REDIRECT_URI
         }
         
-        token_request = requests.post(self.kakao_token_uri, data=body, timeout=3)
+        response = requests.post(self.kakao_token_uri, data=body, timeout=3)
 
-        if not token_request.status_code == 200:
+        if not response.status_code == 200:
             return JsonResponse({'message': 'INVALID_RESPONSE'}, status=token_request.status_code)
+
+        self._access_token = response.json()["access_token"]
         
-        return token_request.json()
-        
-    def get_kakao_profile(self, kakao_token):
-        kakao_response = requests.post(self.kakao_user_uri, \
-            headers={"Authorization": f"Bearer {kakao_token}"}, timeout=3)
+    def get_kakao_profile(self):
+        response = requests.post(
+            self.kakao_user_uri,
+            headers = {
+                "Authorization": f"Bearer {kakao_token}"
+            }, timeout=3
+        )
         
         if not kakao_response.status_code == 200:
             return JsonResponse({'message': 'INVALID_RESPONSE'}, status=kakao_response.status_code)
-
-        return kakao_response.json()
-
+        
+        return {
+            "id" : response["id"],
+            "nickname" : response["kakao_account"]["profile"],
+            ..
+            ..
+        }
