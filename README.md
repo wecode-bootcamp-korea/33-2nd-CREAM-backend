@@ -54,3 +54,6 @@
 
 ## 데이터 ERD
 ![](https://velog.velcdn.com/images/stresszero/post/3aad2024-d484-477f-95e0-730a4f62231b/image.PNG)
+
+## [백엔드 프로젝트 후기](https://velog.io/@stresszero/%EC%9C%84%EC%BD%94%EB%93%9C-2%EC%B0%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9B%84%EA%B8%B0)
+
