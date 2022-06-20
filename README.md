@@ -29,7 +29,7 @@
 
 `Backend`
 
-- Python, Django, MySQL, AWS(EC2, RDS)
+- Python, Django, MySQL
 
 `Cowork`
 
@@ -40,8 +40,8 @@
 [![프로젝트 시연 영상](https://img.youtube.com/vi/v58DAx5gJzE/0.jpg)](https://youtu.be/v58DAx5gJzE)
 
 ## Github 저장소
-프론트엔드: https://github.com/wecode-bootcamp-korea/33-2nd-CREAM-frontend
-백엔드: https://github.com/wecode-bootcamp-korea/33-2nd-CREAM-backend
+[프론트엔드](https://github.com/wecode-bootcamp-korea/33-2nd-CREAM-frontend)  
+[백엔드](https://github.com/wecode-bootcamp-korea/33-2nd-CREAM-backend)
 
 ## 백엔드 구현 기능
 
