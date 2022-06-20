@@ -3,7 +3,8 @@ from django.views     import View
 from django.db.models import Q, F, Max, Min, Count
 
 from products.models import Product
-from orders.models   import Order, BidTypeEnum
+from orders.models   import Order
+from bids.models     import BidTypeEnum
 
 class ProductListView(View):
     def get(self, request):

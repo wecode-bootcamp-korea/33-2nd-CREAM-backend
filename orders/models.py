@@ -5,12 +5,7 @@ from django.db import models
 from core.models     import TimeStampedModel
 from users.models    import User
 from products.models import ProductSize
-
-class BidTypeEnum(Enum):
-    BUY      = 1
-    SELL     = 2
-    END      = 3
-    CANCELED = 4
+from bids.models     import Bid
 
 class OrderStatusEnum(Enum):
     PREPARING          = 1
@@ -20,24 +15,6 @@ class OrderStatusEnum(Enum):
     CHECK_REJECTED     = 5
     CREAM_SHIPPED      = 6
     SHIPPING_COMPLETED = 7
-
-class BidType(models.Model):
-    name = models.CharField(max_length=20)
-
-    class Meta:
-        db_table = 'bid_types'
-
-    def __str__(self):
-        return self.name
-
-class Bid(TimeStampedModel):
-    user         = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bids')
-    type         = models.ForeignKey(BidType, on_delete=models.CASCADE, related_name='bids')
-    product_size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, related_name='bids')
-    price        = models.DecimalField(max_digits=10, decimal_places=2)
-
-    class Meta:
-        db_table = 'bids'
 
 class OrderStatus(models.Model):
     name = models.CharField(max_length=20)
