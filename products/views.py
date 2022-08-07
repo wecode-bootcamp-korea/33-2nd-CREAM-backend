@@ -6,6 +6,9 @@ from products.models import Product
 from orders.models   import Order
 from bids.models     import BidTypeEnum
 
+MIN_SELL_BID = Min("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.SELL.value))
+MAX_BUY_BID = Max("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.BUY.value))
+
 class ProductListView(View):
     def get(self, request):
         category_id       = request.GET.get('category')
@@ -46,8 +49,8 @@ class ProductListView(View):
 
         products = Product.objects \
             .annotate(
-                buy_price   = Min("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.SELL.value)),
-                sell_price  = Max("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.BUY.value)),
+                buy_price   = MIN_SELL_BID,
+                sell_price  = MAX_BUY_BID,
                 premium     = F('buy_price') - F('release_price'),
                 sales_count = Count('productsize__orders', distinct=True)
             ) \
@@ -69,12 +72,11 @@ class ProductDetailView(View):
         try:
             order = Order.objects.filter(product_size__product_id=product_id).order_by('-created_at')
 
-            recent_price = format(int(order.first().price), ',d') if order.exists() \
-                else "최근 거래 없음"
+            recent_price = f'{int(order.first().price):,}' if order.exists() else "최근 거래 없음"
 
             product = Product.objects.annotate(
-                buy_now_price  = Min("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.SELL.value)),
-                sell_now_price = Max("productsize__bids__price", filter=Q(productsize__bids__type_id=BidTypeEnum.BUY.value)),
+                buy_now_price  = MIN_SELL_BID,
+                sell_now_price = MAX_BUY_BID,
             ).get(id=product_id)
 
             detail = {
@@ -84,9 +86,9 @@ class ProductDetailView(View):
                   'model_number'  : product.model_number,
                   'release_date'  : product.release_date,
                   'recent_price'  : recent_price,
-                  'release_price' : format(int(product.release_price), ',d'),
-                  'buy_now_price' : format(int(product.buy_now_price), ',d'),
-                  'sell_now_price': format(int(product.sell_now_price), ',d'),
+                  'release_price' : f'{int(product.release_price):,}',
+                  'buy_now_price' : f'{int(product.buy_now_price):,}',
+                  'sell_now_price': f'{int(product.sell_now_price):,}',
                   'image_list'    : [image.image_url for image in product.images.all()],
             }
             return JsonResponse({'detail': detail}, status=200)
